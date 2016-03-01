@@ -94,12 +94,14 @@ static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.san
         SCNetworkReachabilitySetDispatchQueue(_reachability, NULL);
         CFRelease(_reachability);
     }
+#if !OS_OBJECT_USE_OBJC
     if (_callbackQueue) {
         dispatch_release(_callbackQueue);
     }
     if (_flagsAccessQueue) {
         dispatch_release(_flagsAccessQueue);
     }
+#endif
 }
 
 #pragma mark - public
