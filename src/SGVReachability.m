@@ -28,7 +28,11 @@ static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.san
 
 @implementation SGVReachability
 
-@dynamic reachable, reachableViaWWAN, reachableViaWiFi;
+@dynamic reachable;
+
+#if DC_TARGET_IPHONE
+@dynamic reachableViaWWAN, reachableViaWiFi;
+#endif
 
 #pragma mark - init/dealloc
 
@@ -205,6 +209,8 @@ static void SGVReachabilityChangedCallback(SCNetworkReachabilityRef target,
     }];
 }
 
+#if TARGET_OS_IPHONE
+
 - (BOOL)isReachableViaWWAN {
     return [self isReachableWithCheckBlock:^BOOL(SCNetworkReachabilityFlags flags) {
         return ((flags & kSCNetworkReachabilityFlagsReachable) != 0) &&
@@ -218,5 +224,7 @@ static void SGVReachabilityChangedCallback(SCNetworkReachabilityRef target,
             ((flags & kSCNetworkReachabilityFlagsIsWWAN) == 0);
     }];
 }
+
+#endif
 
 @end

@@ -18,8 +18,10 @@ extern NSString * const kSGVReachabilityChangedNotificationFlagsKey;
 @property (nonatomic, readonly) NSOperationQueue *notificationsQueue;
 
 @property (nonatomic, readonly, getter = isReachable) BOOL reachable;
+#if TARGET_OS_IPHONE
 @property (nonatomic, readonly, getter = isReachableViaWWAN) BOOL reachableViaWWAN;
 @property (nonatomic, readonly, getter = isReachableViaWiFi) BOOL reachableViaWiFi;
+#endif
 
 - (id)initWithNotificationsQueue:(NSOperationQueue *)notificationsQueueOrNil;
 
