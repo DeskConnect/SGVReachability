@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 sanekgusev. All rights reserved.
 //
 
-#import "SGVReachability.h"
+#import "SGVWReachability.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
 
-NSString * const SGVReachabilityChangedNotification = @"SGVReachabilityChangedNotification";
-NSString * const kSGVReachabilityChangedNotificationFlagsKey = @"SGVReachabilityChangedNotificationFlagsKey";
+NSString * const SGVWReachabilityChangedNotification = @"SGVReachabilityChangedNotification";
+NSString * const kSGVWReachabilityChangedNotificationFlagsKey = @"SGVReachabilityChangedNotificationFlagsKey";
 static NSString * const kSGVReachabilityCallbackQueueNameTemplate = @"com.sanekgusev.SGVReachability.callback-queue-%p";
 static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.sanekgusev.SGVReachability.flags-access-queue-%p";
 
-@interface SGVReachability () {
+@interface SGVWReachability () {
     SCNetworkReachabilityRef _reachability;
     SCNetworkReachabilityFlags _flags;
 
@@ -26,7 +26,7 @@ static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.san
 
 @end
 
-@implementation SGVReachability
+@implementation SGVWReachability
 
 @dynamic reachable;
 
@@ -111,7 +111,7 @@ static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.san
 #pragma mark - public
 
 + (instancetype)mainQueueReachability {
-    static SGVReachability *mainQueueReachability;
+    static SGVWReachability *mainQueueReachability;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         mainQueueReachability = [[self alloc] initWithNotificationsQueue:[NSOperationQueue mainQueue]];
@@ -124,12 +124,12 @@ static NSString * const kSGVReachabilityFlagsAccessQueueNameTemplate = @"com.san
 static void SGVReachabilityChangedCallback(SCNetworkReachabilityRef target,
                                            SCNetworkReachabilityFlags flags,
                                            void* info) {
-    SGVReachability* reachability = (__bridge SGVReachability *)info;
+    SGVWReachability* reachability = (__bridge SGVWReachability *)info;
     [reachability updateFlagsFromFlags:flags];
     void (^notificationBlock)(void) = ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SGVReachabilityChangedNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SGVWReachabilityChangedNotification
                                                             object:reachability
-                                                          userInfo:@{kSGVReachabilityChangedNotificationFlagsKey:
+                                                          userInfo:@{kSGVWReachabilityChangedNotificationFlagsKey:
                                                                          @(flags)}];
     };
     if (reachability->_notificationsQueue) {

@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 
-extern NSString * const SGVReachabilityChangedNotification;
-extern NSString * const kSGVReachabilityChangedNotificationFlagsKey;
+extern NSString * const SGVWReachabilityChangedNotification;
+extern NSString * const kSGVWReachabilityChangedNotificationFlagsKey;
 
-@interface SGVReachability : NSObject
+@interface SGVWReachability : NSObject
 
 @property (nonatomic, readonly) SCNetworkReachabilityFlags flags;
 @property (nonatomic, readonly) NSOperationQueue *notificationsQueue;
